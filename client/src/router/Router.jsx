@@ -1,0 +1,36 @@
+import { createBrowserRouter } from "react-router-dom";
+import Home from "../pages/Home/Home";
+import Offers from "../pages/Offers/Offers";
+import Menu from "../pages/Menu/Menu";
+import Cart from "../pages/Cart/Cart";
+import MainLayout from "../MainLayout";
+
+//This is the root path,every routes will start from here
+// whatever element goes as its children it will go to the  outlet in Main
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/offers",
+        element: <Offers />,
+      },
+      {
+        path: "/menu",
+        element: <Menu />,
+      },
+      {
+        path: "/cart",
+        element: (
+            <Cart />
+        ),
+      },
+    ],
+  },
+]);
+export default router;
