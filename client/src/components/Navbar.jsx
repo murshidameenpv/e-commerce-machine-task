@@ -1,19 +1,26 @@
-import React, {  useEffect, useState } from "react";
-import logo from "/home/logo.png";
+import React, {  useContext, useEffect, useState } from "react";
+import logo from "/home/logo10 (1).png";
 import { FaRegUser } from "react-icons/fa";
-// import Modal from "./Modal";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
-import useCart from "../hooks/useCart";
+import BurgerMenu from '../svgs/BurgerMenu.svg?react'
+import Cart from '../svgs/Cart.svg?react'
+import Search from '../svgs/Search.svg?react'
+import { CartContext } from "../contexts/CartProvider";
+
 
 
 function Navbar() {
   // Handle scroll functions
-  // This function checks the vertical scroll position of the window (window.scrollY). If the scroll position is greater than 0, it means the user has scrolled down, and isSticky is set to true. If the scroll position is 0 (top of the page), isSticky is set to false.
   const [isSticky, setSticky] = useState(false);
+     const { cart } = useContext(CartContext);
 
-  const [cart, refetch] = useCart();
+  // const [cart, refetch] = useCart();
   const isAuthenticated = true;
+  const user = {
+    photoURL:"https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?size=338&ext=jpg&ga=GA1.1.2113030492.1720051200&semt=ais_user"
+  }
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,59 +34,49 @@ function Navbar() {
   const navItems = (
     <>
       <li>
-        <a href="/">Home</a>
+        <Link to="/">Home</Link>
       </li>
       <li>
-        <a href="/menu">Menu</a>
+        <Link to="/products">Products</Link>
       </li>
       <li tabIndex={0}>
         <details>
           <summary>Services</summary>
           <ul className="p-2">
             <li>
-              <a>Order Online</a>
+              <a>Submenu 1</a>
             </li>
             <li>
-              <a>Table Booking</a>
+              <a>Submenu 2</a>
             </li>
             <li>
-              <a>Order Tracking</a>
+              <a>Submenu 3</a>
             </li>
           </ul>
         </details>
       </li>
       <li>
-        <a>Offers</a>
+        <Link to="/offers">Offers</Link>
       </li>
     </>
   );
 
   return (
-    <header className="max-w-screen-2xl mx-auto container fixed top-0 left-0 right-0 transition-all duration-300 ease-in-out">
+    <header className="max-w-screen-2xl mx-auto container fixed top-0 left-0 right-0 transition-all duration-300 ease-in-out z-30">
       <div
-        className={`navbar xl:px-24 ${
+        className={`navbar  ${
           isSticky
             ? "shadow-md bg-base-100 transition-all duration-300 ease-out"
             : ""
         }`}
       >
         <div className="navbar-start">
+          <a href="/" className="hidden md:block">
+            <img src={logo} alt="logo" />
+          </a>
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
+              <BurgerMenu />
             </div>
             <ul
               tabIndex={0}
@@ -88,9 +85,6 @@ function Navbar() {
               {navItems}
             </ul>
           </div>
-          <a href="/">
-            <img src={logo} alt="logo" />
-          </a>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navItems}</ul>
@@ -98,20 +92,7 @@ function Navbar() {
         <div className="navbar-end">
           {/* search */}
           <button className="btn btn-ghost btn-circle hidden lg:flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+            <Search />
           </button>
 
           {/* cartItems */}
@@ -122,23 +103,11 @@ function Navbar() {
               className="btn btn-ghost btn-circle mr-3 items-center justify-center hidden lg:flex"
             >
               <div className="indicator">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
+                <Cart />
                 {isAuthenticated ? (
                   <span className="badge badge-sm indicator-item">
                     {cart.length}
+                    
                   </span>
                 ) : (
                   <span className="badge badge-sm indicator-item">0</span>
@@ -148,8 +117,7 @@ function Navbar() {
           </Link>
 
           {/* button */}
-          {/* Open the modal using document.getElementById('ID').showModal() method */}
-          {isAuthenticated && user ? (
+          {isAuthenticated ? (
             <Profile user={user} />
           ) : (
             <button
@@ -160,7 +128,6 @@ function Navbar() {
               Login
             </button>
           )}
-          <Modal />
         </div>
       </div>
     </header>
