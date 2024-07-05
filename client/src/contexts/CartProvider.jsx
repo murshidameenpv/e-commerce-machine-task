@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import Swal from "sweetalert2";
+
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
@@ -38,39 +39,30 @@ const CartProvider = ({ children }) => {
     }
   };
 
-  const removeFromCart = (itemId) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You want to remove this item from the cart!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#495e57",
-      cancelButtonColor: "#952323",
-      confirmButtonText: "Yes, remove it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setCart((prevCart) =>
-          prevCart.filter((item) => item.itemId !== itemId)
-        );
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Item removed from Cart!",
-          showConfirmButton: true,
-          confirmButtonColor: "#495e57",
-        });
-      }
-    });
-  };
-
-  const updateCartItemQuantity = (itemId, newQuantity) => {
+  const removeFromCart = (item) => {
     setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.itemId === itemId ? { ...item, quantity: newQuantity } : item
-      )
+      prevCart.filter((cartItem) => cartItem.itemId !== item.itemId)
     );
   };
 
+  const updateCartItemQuantity = (item, quantity) => {
+    setCart((prevCart) =>
+      prevCart.map((cartItem) => {
+        if (cartItem.itemId === item.itemId) {
+          return { ...cartItem, quantity };
+        }
+        return cartItem;
+      })
+    );
+  };
+
+  const decreaseQuantity = (item) => {
+    updateCartItemQuantity(item, item.quantity - 1);
+  };
+
+  const increaseQuantity = (item) => {
+    updateCartItemQuantity(item, item.quantity + 1);
+  };
 
   return (
     <CartContext.Provider
@@ -79,6 +71,8 @@ const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateCartItemQuantity,
+        decreaseQuantity,
+        increaseQuantity,
       }}
     >
       {children}

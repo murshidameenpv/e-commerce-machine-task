@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Cards from "../../components/Cards";
 import { FaFilter } from "react-icons/fa";
 import axios from "axios";
+import Skelton from "../../components/Skelton";
 
 function Products() {
   const [products, setProducts] = useState([]);
+   const [loading, setLoading] = useState(true);
   const [filteredItems, setFilteredItems] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   // console.log(selectedCategory,"ppppppppppppppp");
@@ -21,6 +23,7 @@ function Products() {
         // console.log(data);
         setProducts(data);
         setFilteredItems(data);
+         setLoading(false);
       } catch (error) {
         console.error("Error Fetching Data", error);
       }
@@ -157,9 +160,15 @@ function Products() {
         </div>
         {/* product cards */}
         <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
-          {currentItem.map((item, index) => (
-            <Cards key={item.id} item={item} />
-          ))}
+          {loading
+            ? // render skeleton cards while loading
+              Array.from({ length: itemsPerPage }).map((_, index) => (
+                <Skelton key={index} />
+              ))
+            : // render actual product cards once data is received
+              currentItem.map((item, index) => (
+                <Cards key={item.id} item={item} />
+              ))}
         </div>
       </div>
 

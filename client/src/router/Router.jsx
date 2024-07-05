@@ -4,6 +4,7 @@ import Offers from "../pages/Offers/Offers";
 import Products from "../pages/Products/Products";
 import Cart from "../pages/Cart/Cart";
 import MainLayout from "../MainLayout";
+import Checkout from "../pages/Checkout/Checkout";
 
 //This is the root path,every routes will start from here
 // whatever element goes as its children it will go to the  outlet in Main
@@ -26,9 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: (
-            <Cart />
-        ),
+        element: <Cart />,
+      },
+      {
+        path: "/proceed-checkout",
+        element: <Checkout />,
       },
     ],
   },
