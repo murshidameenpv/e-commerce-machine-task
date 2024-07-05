@@ -54,11 +54,16 @@ function Products() {
     //logic
     switch (option) {
       case "A-Z":
-        sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+        sortedItems.sort((a, b) =>
+          a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+        );
         break;
       case "Z-A":
-        sortedItems.sort((a, b) => b.name.localeCompare(a.name));
+        sortedItems.sort((a, b) =>
+          b.title.toLowerCase().localeCompare(a.title.toLowerCase())
+        );
         break;
+
       case "low-to-high":
         sortedItems.sort((a, b) => a.price - b.price);
         break;
